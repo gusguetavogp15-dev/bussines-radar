@@ -163,7 +163,7 @@
     }
     const src = d.sources || {};
     $('#trendsStatus').innerHTML = `Actualizado ${when(d.updated)}${d.stale ? ' (último intento falló; se muestra lo anterior)' : ''} · ` +
-      Object.entries(src).map(([k, v]) => `${k} ${v.n}`).join(' · ') + ` · historial: ${d.historyDays} ${d.historyDays === 1 ? 'día' : 'días'}`;
+      Object.entries(src).map(([k, v]) => `${k} ${v.n}${v.kept ? ' (datos anteriores)' : ''}`).join(' · ') + ` · historial: ${d.historyDays} ${d.historyDays === 1 ? 'día' : 'días'}`;
 
     const base = (d.today || []).map(p => ({ ...p, pot: potential(p) }));
     const cats = [...new Set(base.map(p => p.cat))].sort();

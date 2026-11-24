@@ -280,6 +280,16 @@ def period(days):
 def refresh_products():
     amazon, ok, tried = get_amazon()
     walmart = get_walmart()
+    prev_today = (STATE.get('products') or {}).get('today') or []
+    kept = []                              # si una tienda no responde, se conservan sus últimos datos
+    if not amazon:
+        amazon = [dict(p) for p in prev_today if p.get('src') == 'Amazon']
+        kept.append('Amazon') if amazon else None
+    if not walmart:
+        walmart = [dict(p) for p in prev_today if p.get('src') == 'Walmart']
+        kept.append('Walmart') if walmart else None
+    if kept:
+        log('sin respuesta nueva de', ', '.join(kept), '· se conservan sus datos anteriores')
     best = {}
     for it in amazon + walmart:            # un producto puede salir en varias listas: se queda el mejor puesto
         it['usd'] = usd_of(it.get('price'))
@@ -307,8 +317,8 @@ def refresh_products():
             STATE['products'] = {
                 'updated': now, 'today': items, 'historyDays': len(HIST['days']),
                 'sources': {
-                    'Amazon': {'n': len(amazon), 'pages': '%d/%d' % (ok, tried), 'ok': bool(amazon)},
-                    'Walmart': {'n': len(walmart), 'ok': bool(walmart)},
+                    'Amazon': {'n': len(amazon), 'pages': '%d/%d' % (ok, tried), 'ok': bool(amazon), 'kept': 'Amazon' in kept},
+                    'Walmart': {'n': len(walmart), 'ok': bool(walmart), 'kept': 'Walmart' in kept},
                 },
             }
         elif STATE['products']:

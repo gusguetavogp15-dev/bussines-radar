@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es" data-theme="cream">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bussines Radar</title>
+<meta name="theme-color" content="#fbf8f2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div></div>
+
+<header class="nav glass">
+  <div class="brand"><span class="logo"></span><b>Bussines <span>Radar</span></b></div>
+  <nav class="tabs" role="tablist">
+    <span class="tab-pill" id="tabPill"></span>
+    <button class="tab active" data-view="radar" role="tab">Radar</button>
+    <button class="tab" data-view="trends" role="tab">Más vendidos</button>
+    <button class="tab" data-view="news" role="tab">Noticias</button>
+    <button class="tab" data-view="suppliers" role="tab">Proveedores</button>
+    <button class="tab" data-view="saved" role="tab">Guardados <em id="savedCount">0</em></button>
+  </nav>
+  <div class="nav-right">
+    <div class="status" title="Última actualización de datos"><span class="dot"></span><span>Datos reales · <span id="lastUpdate" class="mono">—</span></span></div>
+    <button class="icon-btn" id="themeToggle" title="Cambiar tema" aria-label="Cambiar tema"></button>
+  </div>
+</header>
+
+<main>
+  <section class="view active" id="view-radar">
+    <div class="hero">
+      <div>
+        <h1>Los mejores negocios, <span class="grad">ahora.</span></h1>
+        <p class="lead">Ideas ordenadas por interés y noticias reales, cada una con los proveedores para arrancar.</p>
+      </div>
+      <div class="kpis" id="kpis"></div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <div class="toolbar">
+          <div class="tb-row">
+            <label class="search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input id="q" type="search" placeholder="Buscar negocio o proveedor" autocomplete="off">
+            </label>
+            <label class="sel" title="Mercado"><span>Mercado</span><select id="market" aria-label="Mercado"></select></label>
+            <label class="sel" title="Ordenar"><span>Ordenar</span>
+              <select id="sort" aria-label="Ordenar">
+                <option value="score">Mejor score</option>
+                <option value="trend">Mayor momentum</option>
+                <option value="roi">Mayor ROI</option>
+                <option value="cap">Menor inversión</option>
+                <option value="payback">Retorno más rápido</option>
+              </select>
+            </label>
+            <label class="range" title="Capital disponible"><span>Capital</span><input type="range" id="cap" min="1000" max="40000" step="500" value="40000" aria-label="Capital disponible"><b id="capLabel"></b></label>
+          </div>
+          <div class="chips" id="catChips"></div>
+        </div>
+        <div class="grid" id="dealGrid"></div>
+      </div>
+
+      <aside class="side-col">
+        <div class="panel glass">
+          <div class="panel-h"><h3>Noticias y señales</h3></div>
+          <ul class="feed" id="feed"></ul>
+        </div>
+        <div class="panel glass">
+          <div class="panel-h"><h3>Fuentes</h3></div>
+          <ul class="sources" id="sources"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="view" id="view-trends">
+    <div class="section-head"><div><h2>Lo que se está vendiendo</h2><p class="lead">Rankings reales de Amazon y Walmart, y lo más buscado hoy en Rep. Dominicana y EE.UU.</p></div><p class="status-line" id="trendsStatus"></p></div>
+    <div id="trendsBody"></div>
+  </section>
+
+  <section class="view" id="view-news">
+    <div class="section-head"><div><h2>Noticias</h2><p class="lead">Titulares recientes de economía y negocios, y las ideas que sugieren.</p></div><p class="status-line" id="newsStatus"></p></div>
+    <div id="newsBody"></div>
+  </section>
+
+  <section class="view" id="view-suppliers">
+    <div class="section-head">
+      <div><h2>Proveedores</h2><p class="lead">Fabricantes, mayoristas, software y logística para cada negocio del radar.</p></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="supQ" type="search" placeholder="Buscar proveedor" autocomplete="off">
+      </label>
+    </div>
+    <div class="chips" id="supChips"></div>
+    <div class="sup-grid" id="supGrid"></div>
+  </section>
+
+  <section class="view" id="view-saved">
+    <div class="section-head"><div><h2>Guardados</h2><p class="lead">Los negocios que marcaste para seguir.</p></div></div>
+    <div class="grid" id="savedGrid"></div>
+  </section>
+
+  <footer class="foot">Más vendidos: Amazon y Walmart. Búsquedas: Google Trends. Titulares: elDinero, Diario Libre y Google Noticias. Interés y momentum: vistas de Wikipedia. Tecnología: Hacker News. Divisas: ExchangeRate-API. Inversión, margen, ROI, retorno, riesgo, el "potencial" de los productos y las ideas sugeridas son estimaciones. Confirma precios y condiciones con cada proveedor. No es asesoría financiera.</footer>
+</main>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="sheet glass" role="dialog" aria-modal="true" id="sheet"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="live.js"></script>
+<script src="app.js"></script>
+<script src="tendencias.js"></script>
+</body>
+</html>

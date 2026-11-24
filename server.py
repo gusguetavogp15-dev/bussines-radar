@@ -280,13 +280,20 @@ def period(days):
 def refresh_products():
     amazon, ok, tried = get_amazon()
     walmart = get_walmart()
-    prev_today = (STATE.get('products') or {}).get('today') or []
     kept = []                              # si una tienda no responde, se conservan sus últimos datos
+
+    def last_known(src):
+        prefix = src.lower() + ':'
+        for d in sorted(HIST['days'], reverse=True):
+            ranks = {k: v for k, v in HIST['days'][d].items() if k.startswith(prefix)}
+            if ranks:
+                return [dict(HIST['catalog'][k], rank=r) for k, r in ranks.items() if k in HIST['catalog']]
+        return []
     if not amazon:
-        amazon = [dict(p) for p in prev_today if p.get('src') == 'Amazon']
+        amazon = last_known('Amazon')
         kept.append('Amazon') if amazon else None
     if not walmart:
-        walmart = [dict(p) for p in prev_today if p.get('src') == 'Walmart']
+        walmart = last_known('Walmart')
         kept.append('Walmart') if walmart else None
     if kept:
         log('sin respuesta nueva de', ', '.join(kept), '· se conservan sus datos anteriores')

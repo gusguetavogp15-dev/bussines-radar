@@ -89,9 +89,11 @@ CAT_MAP = {
     'bebé': 'Bebé', 'baby': 'Bebé', 'productos para bebé': 'Bebé',
     'oficina': 'Oficina', 'productos de oficina': 'Oficina', 'arts crafts & sewing': 'Oficina',
     'automotriz': 'Automotriz', 'auto & tires': 'Automotriz', 'amazon renewed': 'Reacondicionados',
-    'party & occasions': 'Fiestas y regalos',
+    'party & occasions': 'Fiestas y regalos', 'cell phones': 'Electrónica', 'videojuegos': 'Electrónica',
+    'tv & video': 'Electrónica', 'computers': 'Electrónica', 'sports & outdoors': 'Deportes y aire libre',
+    'toys & games': 'Juguetes y juegos', 'food': 'Salud y hogar', 'grocery': 'Salud y hogar',
 }
-DROP_CATS = {'monedas coleccionables', 'photo center', 'tarjetas de regalo', 'tienda kindle', 'libros', 'apps y juegos'}
+DROP_CATS = {'monedas coleccionables', 'photo center', 'tarjetas de regalo', 'tienda kindle', 'libros', 'apps y juegos', 'services', 'gift cards'}
 
 
 def norm_cat(c):

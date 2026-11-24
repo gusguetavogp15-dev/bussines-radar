@@ -18,7 +18,7 @@
   const plain = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
   const st = {
-    data: null, news: null, offline: false, loaded: false, mode: null,
+    data: null, news: null, offline: false, loaded: false, mode: /\.github\.io$/.test(location.hostname) ? 'static' : null,
     period: 'today', list: 'all', src: 'all', cat: 'all', q: '', shown: 48,
     region: 'all', sector: 'all',
   };
